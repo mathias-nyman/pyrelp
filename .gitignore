@@ -1,0 +1,10 @@
+__pycache__
+
+# Test results
+log.html
+report.html
+output.xml
+
+# Test artifacts
+test/receiver/logs
+test/sender/send
