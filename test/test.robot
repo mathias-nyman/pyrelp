@@ -42,7 +42,7 @@ The rsyslog receiver receives the message
 The pyrelp client sends a message
     ${g_magic_message} =  Generate Random String
     Set Test Variable  ${g_magic_message}
-    Run  cd .. && LD_LIBRARY_PATH=librelp/src/.libs PYTHONPATH=src ./bin/pyrelp ${g_receiver_ip} ${g_relp_port} ${g_magic_message}
+    Run  cd .. && LD_LIBRARY_PATH=librelp/src/.libs PYTHONPATH=pyrelp ./bin/pyrelp ${g_receiver_ip} ${g_relp_port} ${g_magic_message}
 
 
 *** Test Cases ***
