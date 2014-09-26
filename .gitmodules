@@ -1,0 +1,3 @@
+[submodule "librelp"]
+	path = librelp
+	url = https://github.com/rsyslog/librelp.git
