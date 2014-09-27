@@ -1,10 +1,13 @@
 pwd:= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-all: librelp test
+all: librelp build test
 
 librelp:
 	cd librelp &&\
 		libtoolize && aclocal && autoconf && autoheader && automake --add-missing && ./configure --enable-debug && make
+
+build: librelp
+	python setup.py build
 
 reference-sender:
 	gcc -g -Ilibrelp/src -Llibrelp/src/.libs -lrelp -Wl,-rpath,librelp/src/.libs test/sender/send.c -o test/sender/send

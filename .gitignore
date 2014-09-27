@@ -1,4 +1,6 @@
+# Python
 __pycache__
+*.pyc
 
 # Test results
 log.html
@@ -8,3 +10,8 @@ output.xml
 # Test artifacts
 test/receiver/logs
 test/sender/send
+
+# Setuptools
+build/
+*.egg-info
+dist/

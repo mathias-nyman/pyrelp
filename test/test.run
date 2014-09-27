@@ -1,0 +1,4 @@
+#!/usr/env/bin python2
+
+import robot
+robot.run('.')
