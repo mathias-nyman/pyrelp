@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import sys
-import pyrelp
+from pyrelp import pyrelp
 
 r = pyrelp.Client(sys.argv[1], sys.argv[2])
 r.send(sys.argv[3])

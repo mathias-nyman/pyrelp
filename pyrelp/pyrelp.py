@@ -1,11 +1,13 @@
 import sys
+import os
 from ctypes import *
 
 
 #TODO: inherit CDLL
 class Client(object):
     def __init__(self, target="127.0.0.1", port="514"):
-        self.__lib = cdll.LoadLibrary("librelp.so")
+        relp_lib = os.path.realpath(__file__ + '/../../relp.so')
+        self.__lib = cdll.LoadLibrary(relp_lib)
         self.__engine = c_void_p()
         self.__client = c_void_p()
         self.__target = target
