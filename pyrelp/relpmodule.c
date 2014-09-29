@@ -8,8 +8,6 @@
 #include <Python.h>
 #include "librelp.h"
 
-static void *relpEngine;
-
 static PyMethodDef relp_methods[] =
 {
     {NULL, NULL, 0, NULL}
