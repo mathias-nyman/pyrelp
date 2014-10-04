@@ -21,23 +21,17 @@ build: librelp-config manifest-file
 	python2 setup.py build
 	python2 setup.py sdist
 
+upload: build
+	python2 setup.py sdist upload
+
 reference-sender: librelp-build
 	gcc -g -Ilibrelp/src -Llibrelp/src/.libs -lrelp -Wl,-rpath,librelp/src/.libs test/sender/send.c -o test/sender/send
 
 mock-receiver:
 	docker build -t rsyslog-receiver test/receiver
 
-test-install: test-clean
-	cd dist && tar xzvf pyrelp*tar.gz
-	cd dist/pyrelp* && pip2 install . --user
-
-test-clean:
-	pip2 uninstall -y pyrelp || :
-
-test-relp-clients: reference-sender mock-receiver
-	cd test && PATH=~/.local/bin:$$PATH pybot --loglevel=DEBUG test.robot
-
-test: test-install test-relp-clients test-clean
+test: reference-sender mock-receiver
+	cd test && pybot --loglevel=DEBUG test.robot
 
 
-.PHONY: librelp-config manifest-file build reference-sender mock-receiver test-relp-clients test
+.PHONY: librelp-config manifest-file build reference-sender mock-receiver test
