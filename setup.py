@@ -27,11 +27,11 @@ librelp = ('librelp', {'sources': librelp_sources,
 relp_ext = Extension('relp',
                      sources = ['pyrelp/relpmodule.c'],
                      include_dirs = ['librelp/src'],
-                     libraries = ['gnutls'],
+                     libraries = ['gnutls', 'rt'],
                      extra_objects = ['build/' + distutils_dir_name('temp') + '/librelp/src/relp.o'])
 
 setup(name='pyrelp',
-      version='0.1',
+      version='0.2',
       description='A python wrapper of librelp',
       long_description=readme(),
       url='https://github.com/mathias-nyman/pyrelp',
