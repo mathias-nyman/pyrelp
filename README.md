@@ -25,3 +25,12 @@ Development & Testing
 Run:
 > make
 
+
+Dependencies
+---
+
+autotools
+libtool
+docker
+robotframework
+
