@@ -3,12 +3,12 @@
 #include <string.h>
 #include "librelp.h"
 
+#define TRY(f) if(f != RELP_RET_OK) { printf("%s\n", #f); return 1; }
 
 static relpEngine_t *pRelpEngine;/* our relp engine */
 static void dbgprintf(char __attribute__((unused)) *fmt, ...) {
     printf(fmt);
 }
-
 
 int main(int argc, char *argv[]) {
 
@@ -18,48 +18,18 @@ int main(int argc, char *argv[]) {
     unsigned timeout = 90;
     int protFamily = 2; /* IPv4=2, IPv6=10 */
 
-    if(relpEngineConstruct(&pRelpEngine) != RELP_RET_OK) {
-        printf("relpEngineConstruct\n");
-        return 1;
-    }
-    if(relpEngineSetDbgprint(pRelpEngine, dbgprintf) != RELP_RET_OK) {
-        printf("relpEngineSetDbgprint\n");
-        return 1;
-    }
-    if(relpEngineSetEnableCmd(pRelpEngine, (unsigned char*) "syslog", 3) != RELP_RET_OK) { /* 3=required */
-        printf("relpEngineSetEnableCmd\n");
-        return 1;
-    }
-    if(relpEngineCltConstruct(pRelpEngine, &pRelpClt) != RELP_RET_OK) {
-        printf("relpEngineCltConstruct\n");
-        return 1;
-    }
-    if(relpCltSetTimeout(pRelpClt, timeout) != RELP_RET_OK) {
-        printf("relpCltSetTimeout\n");
-        return 1;
-    }
-    if(relpCltConnect(pRelpClt, protFamily, port, target) != RELP_RET_OK) {
-        printf("relpCltConnect\n");
-        return 1;
-    }
-
+    TRY(relpEngineConstruct(&pRelpEngine));
+    TRY(relpEngineSetDbgprint(pRelpEngine, dbgprintf));
+    TRY(relpEngineSetEnableCmd(pRelpEngine, (unsigned char*) "syslog", 3)); /* 3=required */
+    TRY(relpEngineCltConstruct(pRelpEngine, &pRelpClt));
+    TRY(relpCltSetTimeout(pRelpClt, timeout));
+    TRY(relpCltConnect(pRelpClt, protFamily, port, target));
 
     unsigned char *pMsg = argv[3];
     size_t lenMsg = strlen((char*) pMsg);
+    TRY(relpCltSendSyslog(pRelpClt, pMsg, lenMsg));
 
-    if(relpCltSendSyslog(pRelpClt, pMsg, lenMsg) != RELP_RET_OK) {
-        printf("relpCltSendSyslog\n");
-        return 1;
-    }
-
-
-    if(relpEngineCltDestruct(pRelpEngine, &pRelpClt) != RELP_RET_OK) {
-        printf("relpEngineCltDestruct\n");
-        return 1;
-    }
-    if(relpEngineDestruct(&pRelpEngine) != RELP_RET_OK) {
-        printf("relpEngineDestruct\n");
-        return 1;
-    }
+    TRY(relpEngineCltDestruct(pRelpEngine, &pRelpClt));
+    TRY(relpEngineDestruct(&pRelpEngine));
 }
 
