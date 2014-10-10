@@ -27,6 +27,9 @@ upload: build
 reference-sender: librelp-build
 	gcc -g -Ilibrelp/src -Llibrelp/src/.libs -lrelp -Wl,-rpath,librelp/src/.libs test/sender/send.c -o test/sender/send
 
+reference-receiver: librelp-build
+	gcc -g -Ilibrelp/src -Llibrelp/src/.libs -lrelp -Wl,-rpath,librelp/src/.libs test/receiver/receive.c -o test/receiver/receive
+
 mock-receiver:
 	docker build -t rsyslog-receiver test/receiver
 

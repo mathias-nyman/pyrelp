@@ -10,6 +10,7 @@ output.xml
 # Test artifacts
 test/receiver/logs
 test/sender/send
+test/receiver/receive
 
 # Setuptools
 build/
