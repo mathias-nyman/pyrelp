@@ -3,7 +3,7 @@ Library  OperatingSystem
 Library  Process
 Library  String
 Suite Setup  Start receiver
-Suite Teardown  Stop receiver
+Suite Teardown  Stop dockers
 
 *** Variables ***
 ${g_magic_message} =  kjqowiejflksjdlkf
@@ -22,16 +22,16 @@ Start receiver
     ${g_docker_receiver_id} =  Run  docker run -d -P -v ${g_receiver_log_dir}:/rsyslog -t rsyslog-receiver
     Set Suite Variable  ${g_docker_receiver_id}
 
-Get receiver IP
-    ${g_receiver_ip} =  Run  docker inspect ${g_docker_receiver_id} | grep IPAddress | /bin/grep -Po "\\d+\\.\\d+\\.\\d+.\\d+"
+Set receiver IP ${docker_id}
+    ${g_receiver_ip} =  Run  docker inspect ${docker_id} | grep IPAddress | /bin/grep -Po "\\d+\\.\\d+\\.\\d+.\\d+"
     Set Test Variable  ${g_receiver_ip}
 
-Stop receiver
-    Run  docker stop ${g_docker_receiver_id} ${g_docker_pyrelp_id}
-    Run  docker rm ${g_docker_receiver_id} ${g_docker_pyrelp_id}
+Stop dockers
+    Run  docker stop ${g_docker_receiver_id} ${g_docker_pyrelp_id} ${g_docker_pyrelp_server_id}
+    Run  docker rm ${g_docker_receiver_id} ${g_docker_pyrelp_id} ${g_docker_pyrelp_server_id}
 
 An rsyslog receiver is running
-    Get receiver IP
+    Set receiver IP ${g_docker_receiver_id}
 
 The reference C sender sends a message
     ${g_magic_message} =  Generate Random String
@@ -60,6 +60,13 @@ The reference C receiver is running
     Set Test Variable  ${g_receiver_ip}  127.0.0.1
     Start Process  ./test/receiver/receive  ${g_relp_port}  cwd=${CURDIR}${/}..
 
+A pyrelp receiver is running
+    ${receiver} =  Get File  ${CURDIR}${/}receiver/receive.py
+    ${rc}  ${g_docker_pyrelp_server_id} =  Run And Return Rc And Output  docker run -d -v ${g_receiver_log_dir}:/rsyslog -t clean-machine python -c "${receiver}"
+    Should Be Equal As Integers  ${rc}  0
+    Set Suite Variable  ${g_docker_pyrelp_server_id}
+    Set receiver IP ${g_docker_pyrelp_server_id}
+
 
 *** Test Cases ***
 Reference C sender can send a RELP message
@@ -76,5 +83,11 @@ Pyrelp can be installed and send a RELP message
     Given an rsyslog receiver is running
     When pyrelp is installed on a clean machine
     And the pyrelp client sends a message
+    Then the relp receiver receives the message
+
+Pyrelp server can receive a RELP message
+    Given pyrelp is installed on a clean machine
+    And a pyrelp receiver is running
+    When the pyrelp client sends a message
     Then the relp receiver receives the message
 
