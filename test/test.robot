@@ -38,7 +38,7 @@ The reference C sender sends a message
     Set Test Variable  ${g_magic_message}
     Run  cd .. && ./test/sender/send ${g_receiver_ip} ${g_relp_port} ${g_magic_message}
 
-The rsyslog receiver receives the message
+The relp receiver receives the message
     Sleep  2 sec
     ${rc} =  Run And Return Rc  grep ${g_magic_message} ${g_receiver_log}
     Should Be Equal As Integers  ${rc}  0
@@ -60,27 +60,21 @@ The reference C receiver is running
     Set Test Variable  ${g_receiver_ip}  127.0.0.1
     Start Process  ./test/receiver/receive  ${g_relp_port}  cwd=${CURDIR}${/}..
 
-The reference C receiver receives the message
-    Terminate Process
-    ${result} =  Get Process Result
-    Should Contain  ${result.stdout}  ${g_magic_message}
-    Should Be Empty  ${result.stderr}
-
 
 *** Test Cases ***
 Reference C sender can send a RELP message
     Given an rsyslog receiver is running
     When the reference C sender sends a message
-    Then the rsyslog receiver receives the message
+    Then the relp receiver receives the message
 
 Reference C receiver can receive a RELP message
     Given the reference C receiver is running
     When the reference C sender sends a message
-    Then the reference C receiver receives the message
+    Then the relp receiver receives the message
 
 Pyrelp can be installed and send a RELP message
     Given an rsyslog receiver is running
     When pyrelp is installed on a clean machine
     And the pyrelp client sends a message
-    Then the rsyslog receiver receives the message
+    Then the relp receiver receives the message
 

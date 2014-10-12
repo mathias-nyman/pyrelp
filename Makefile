@@ -33,7 +33,7 @@ reference-receiver: librelp-build
 mock-receiver:
 	docker build -t rsyslog-receiver test/receiver
 
-test: reference-sender mock-receiver
+test: reference-sender reference-receiver mock-receiver
 	cd test && pybot --loglevel=DEBUG test.robot
 
 

@@ -10,8 +10,9 @@ static void dbgprintf(char __attribute__((unused)) *fmt, ...) {
     printf(fmt);
 }
 static relpRetVal onSyslogRcv(unsigned char *pHostname, unsigned char *pIP, unsigned char *msg, size_t lenMsg) {
-    printf("*-*-*-*-*%s %s %s\n", pHostname, pIP, msg);
-    fflush(stdout);
+    FILE *f = fopen("test/receiver/logs/rsyslog.log", "w");
+    fprintf(f, "%s\n", msg);
+    fflush(f);
 
     return RELP_RET_OK;
 }
