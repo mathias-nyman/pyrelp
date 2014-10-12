@@ -35,13 +35,15 @@ one.
 
 Example RELP Server:
 
-    from pyrelp import pyrelp
+```python
+from pyrelp import pyrelp
 
-    def rcv(host, ip, msg):
-        print(msg)
+def rcv(host, ip, msg):
+    print(msg)
 
-    s = pyrelp.Server(20514, rcv)
-    s.run()
+s = pyrelp.Server(20514, rcv)
+s.run()
+```
 
 
 Development & Testing
