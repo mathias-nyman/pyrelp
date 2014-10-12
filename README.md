@@ -22,7 +22,7 @@ Client
 ---
 
 Send a message to a RELP server:
-> pyrelp <ip> <port> <msg>
+    > pyrelp <ip> <port> <msg>
 
 
 
@@ -33,6 +33,7 @@ There is no default server implementation. Use the `Server` class to implement
 one.
 
 Example RELP Server:
+
     from pyrelp import pyrelp
 
     def rcv(host, ip, msg):
@@ -46,7 +47,7 @@ Development & Testing
 ===
 
 Run:
-> make
+    > make
 
 
 Dependencies

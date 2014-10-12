@@ -31,7 +31,7 @@ relp_ext = Extension('relp',
                      extra_objects = ['build/' + distutils_dir_name('temp') + '/librelp/src/relp.o'])
 
 setup(name='pyrelp',
-      version='0.4',
+      version='0.5',
       description='A python wrapper of librelp',
       long_description=readme(),
       url='https://github.com/mathias-nyman/pyrelp',
