@@ -22,6 +22,7 @@ Client
 ---
 
 Send a message to a RELP server:
+
     > pyrelp <ip> <port> <msg>
 
 
@@ -47,6 +48,7 @@ Development & Testing
 ===
 
 Run:
+
     > make
 
 
