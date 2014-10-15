@@ -5,3 +5,5 @@ python:
 install:
     - make build
 
+script:
+    - echo "TODO"
